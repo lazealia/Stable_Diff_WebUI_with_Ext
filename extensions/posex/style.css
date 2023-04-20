@@ -1,0 +1,159 @@
+/*
+ * CSS for WebUI
+**/
+
+.posex_cont {
+    display: flex;
+    flex-flow: column;
+    gap: 0.5em 0;
+    width: max-content;
+    overflow: auto !important;
+    max-width: 100%;
+}
+
+.posex_cont input[type=checkbox] {
+    appearance: auto;
+}
+
+.posex_reset_cont {
+    display: flex;
+    flex-direction: row;
+    gap: 0 0.5em;
+}
+
+.posex_box {
+    display: block;
+    border: 1px solid gray;
+    padding: 0.5em 0;
+    text-decoration: none;
+    text-align: center;
+}
+
+.posex_reset_cont .posex_box {
+    flex: 1 1 0;
+}
+
+.posex_canvas_cont {
+    display: flex;
+    flex-direction: row;
+}
+
+.posex_canvas_size {
+    background-color: transparent !important;
+}
+
+.posex_setting_cont {
+    margin-left: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25em;
+}
+
+.posex_body {
+    width: max-content;
+    min-width: 100%;
+    text-align: left;    
+    border: 1px solid gray;
+    padding: 0.5em;
+}
+
+.posex_bg_cont {
+    display: flex;
+    flex-direction: row;
+    gap: 0 0.25em;
+}
+
+.posex_bg {
+    flex: 0 0 0;
+    border: 1px solid gray;
+    padding: 0.25em 1em;
+    min-width: 5em;
+}
+
+.posex_notation {
+    display: none;
+    position: absolute;
+    color: black;
+    background-color: rgba(255, 255, 255, 0.75);
+    padding: 0.1em 0.25em;
+    pointer-events: none;
+    font-size: small;
+}
+
+.posex_indicator1 {
+    display: none;
+    position: absolute;
+    outline: 1px solid white;
+    pointer-events: none;
+}
+
+.posex_indicator2 {
+    display: none;
+    position: absolute;
+    outline: 1px solid gray;
+    pointer-events: none;
+}
+
+.posex_misc_cont {
+    display: flex;
+    flex-flow: row;
+    gap: 0 0.5em;
+}
+
+.posex_misc {
+    flex: 1 1 0;
+}
+
+.posex_saved_poses {
+    display: flex;
+    flex-direction: row;
+    gap: 0.25em;
+    font-size: small;
+}
+
+.posex_saved_poses > * {
+    margin: 0;
+    outline: 1px solid gray;
+    max-width: 128px;
+}
+
+.posex_saved_poses img {
+    max-width: 128px;
+    max-height: 128px;
+}
+
+.posex_saved_poses figcaption {
+    padding: 0 0.25em;
+    overflow-wrap: anywhere; /* Opera Android may not be able to interpret `anywhere` keyword. */
+}
+
+.posex_saved_poses .close {
+    position: absolute;
+    cursor: pointer;
+    background-color: white;
+    opacity: 0.5 !important;
+    width: 16px;
+    height: 16px;
+    text-align: center;
+    vertical-align: middle;
+    margin: 0;
+    padding: 0;
+    font-family: monospace;
+}
+
+.posex_saved_poses .close:hover {
+    opacity: 1.0 !important;
+}
+
+.posex_saved_poses .close2 {
+    display: none;
+    position: absolute;
+    left: 1.5em;
+    top: 0;
+}
+
+.posex_saved_poses .close:hover .close2 {
+    display: block;
+    color: white;
+    pointer-events: none;
+}

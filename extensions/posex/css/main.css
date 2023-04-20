@@ -1,0 +1,125 @@
+#cont {
+    display: flex;
+    flex-flow: column;
+    gap: 0.5em 0;
+    width: max-content;
+}
+
+.box {
+    display: block;
+    border: 1px solid gray;
+    padding: 0.5em 0;
+    text-decoration: none;
+    text-align: center;
+}
+
+#notation {
+    display: none;
+    position: absolute;
+    color: black;
+    background-color: rgba(255, 255, 255, 0.75);
+    padding: 0.1em 0.25em;
+    pointer-events: none;
+    font-size: small;
+}
+
+#notifications {
+    left: 1em;
+    bottom: 0;
+    width: 25%;
+}
+
+#notifications .item {
+    padding: 0.5em;
+    border: 1px solid gray;
+    animation: erase 2s ease-out 0.5s forwards;
+}
+
+@keyframes erase {
+    100% {
+        opacity: 0;
+    }
+}
+
+#notifications .success {
+    background-color: #aaccaa;
+    color: #004000;
+}
+
+#notifications .info {
+    background-color: white;
+    color: black;
+}
+
+#notifications .error {
+    background-color: #ffcccc;
+    color: red;
+}
+
+#body_indicator1 {
+    display: none;
+    position: absolute;
+    outline: 1px solid white;
+    pointer-events: none;
+}
+
+#body_indicator2 {
+    display: none;
+    position: absolute;
+    outline: 1px solid gray;
+    pointer-events: none;
+}
+
+#saved_poses {
+    display: flex;
+    flex-direction: row;
+    gap: 0.25em;
+    font-size: small;
+}
+
+#saved_poses > * {
+    margin: 0;
+    outline: 1px solid gray;
+    max-width: 128px;
+}
+
+#saved_poses img {
+    max-width: 128px;
+    max-height: 128px;
+}
+
+#saved_poses figcaption {
+    padding: 0 0.25em;
+    overflow-wrap: anywhere; /* Opera Android may not be able to interpret `anywhere` keyword. */
+}
+
+#saved_poses .close {
+    position: absolute;
+    cursor: pointer;
+    border: 1px solid gray;
+    background-color: white;
+    opacity: 0.5;
+    width: 1.25em;
+    height: 1.25em;
+    text-align: center;
+    vertical-align: middle;
+    margin: 0;
+    font-family: monospace;
+}
+
+#saved_poses .close:hover {
+    opacity: 1.0;
+}
+
+#saved_poses .close2 {
+    display: none;
+    position: absolute;
+    left: 1.5em;
+    top: 0;
+}
+
+#saved_poses .close:hover .close2 {
+    display: block;
+    color: white;
+    pointer-events: none;
+}

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Posex - Estimated Image Generator for Pose2Image</title>
+  <link rel="icon" type="image/png" href="image/favicon.png">
+  <link rel="stylesheet" href="css/main.css">
+  <script async src="js/es-module-shims.js"></script>
+  <script type="importmap">
+      {
+        "imports": {
+          "three": "./js/three.module.js",
+          "three-trackballcontrols": "./js/TrackballControls.js",
+          "three-dragcontrols": "./js/DragControls.js",
+          "three-meshline": "./js/THREE.MeshLine.Module.min.js",
+          "posex": "./js/posex.js"
+        }
+      }
+    </script>
+  <script type="esms-options">
+        {
+            "noLoadEventRetriggers": true
+        }
+    </script>
+  <script defer type="module" src="js/app.js"></script>
+</head>
+
+<body>
+  <div id="cont">
+    <button id="all_reset" class="box">&#x1f504; All Reset</button>
+    <div style="display: flex; flex-direction: row; gap: 0 0.5em;">
+      <button id="reset_camera" class="box" style="flex: 1 1 0">&#x1f3a5; Reset Camera</button>
+      <button id="reset_pose" class="box" style="flex: 1 1 0">&#x1f9cd; Reset Pose</button>
+    </div>
+    <div style="display: flex; flex-direction: row; ">
+
+      <canvas width="512" height="512" id="main_canvas"></canvas>
+
+      <div style="margin-left: 1em; display: flex; flex-direction: column; gap: 0.25em; font-size: smaller;">
+        <div>- Camera</div>
+        <label><input type="checkbox" id="fixed_roll">Fixed Roll</label>
+        <div>- Body</div>
+        <button id="add_body" style="width: max-content; min-width: 100%; text-align: left;">&#x2795; Add</button>
+        <button id="remove_body" style="width: max-content; min-width: 100%; text-align: left;">&#x2796; Remove</button>
+        <div>- Canvas Size</div>
+        <input type="number" id="canvas_width" value="512" min="64" />
+        <input type="number" id="canvas_height" value="512" min="64" />
+        <div>- Background</div>
+        <div style="display: flex; flex-direction: row; gap: 0 0.25em;">
+          <label style="flex: 0 0 0;"><button onclick="document.querySelector('#bg_file').click();">&#x1f5bc; Set</button><input type="file" id="bg_file" style="display: none;"/></label>
+          <button id="reset_bg" style="flex: 0 0 0;">&#x274c; Del</button>
+        </div>
+        <div>- Joints and Limbs</div>
+        <!-- <label><input type="range" id="joint_radius" min="1" max="16" value="4" />Joint Radius</label> -->
+        <label><input type="range" id="limb_width" min="1" max="16" value="4" />Limb Width</label>
+        <label><input type="checkbox" id="elliptic_limbs" checked />Elliptic Limbs</label>
+        <div>- Others</div>
+        <label><input type="checkbox" id="low_fps" />Low fps</label>
+      </div>
+    </div>
+    <div id="body_indicator2"></div>
+    <div id="body_indicator1"></div>
+    <div style="display: flex; flex-direction: row; gap: 0 0.25em;">
+      <a id="save_button" class="box" style="flex: 1 1 0;" href="#">&#x1f4be; Save Image</a>
+      <a id="copy_button" class="box" style="flex: 1 1 0;" href="#">&#x1f4cb; Copy to clipboard</a>
+    </div>
+    <button id="save_pose" class="box">&#x1f4be;&#x1f9cd; Save Pose</button>
+    <div id="saved_poses"></div>
+  </div>
+  <p id="notation"></p>
+  <div id="notifications"></div>
+</body>
+
+</html>
