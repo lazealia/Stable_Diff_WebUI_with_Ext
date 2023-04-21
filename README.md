@@ -1,4 +1,4 @@
-# Stable Diffusion web UI with Extensions
+# Stable Diffusion WebUI with Extensions
 A browser interface based on Gradio library for Stable Diffusion
 - stable-diffusion-webui - https://github.com/AUTOMATIC1111/stable-diffusion-webui
 # Memfix
@@ -20,9 +20,7 @@ A browser interface based on Gradio library for Stable Diffusion
 - canvas-zoom - https://github.com/richrobber2/canvas-zoom
 - a1111-sd-webui-locon - https://github.com/KohakuBlueleaf/a1111-sd-webui-locon
 
-## Credits
-Licenses for borrowed code can be found in `Settings -> Licenses` screen, and also in `html/licenses.html` file.
-
+# Credits
 - stable-diffusion-webui - https://github.com/AUTOMATIC1111/stable-diffusion-webui
 - Stable Diffusion - https://github.com/CompVis/stable-diffusion, https://github.com/CompVis/taming-transformers
 - k-diffusion - https://github.com/crowsonkb/k-diffusion.git
