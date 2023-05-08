@@ -2,15 +2,24 @@ from enum import Enum
 from typing import List, Any, Optional, Union, Tuple, Dict
 import numpy as np
 from modules import scripts, processing, shared
-from scripts.global_state import update_cn_models, cn_models_names, cn_preprocessor_modules
+from scripts import global_state
+from scripts.processor import preprocessor_sliders_config
 
 from modules.api import api
 
-PARAM_COUNT = 13
-
 
 def get_api_version() -> int:
-    return 1
+    return 2
+
+
+class ControlMode(Enum):
+    """
+    The improved guess mode.
+    """
+
+    BALANCED = "Balanced"
+    PROMPT = "My prompt is more important"
+    CONTROL = "ControlNet is more important"
 
 
 class ResizeMode(Enum):
@@ -40,6 +49,19 @@ def resize_mode_from_value(value: Union[str, int, ResizeMode]) -> ResizeMode:
         return value
 
 
+def control_mode_from_value(value: Union[str, int, ControlMode]) -> ControlMode:
+    if isinstance(value, str):
+        return ControlMode(value)
+    elif isinstance(value, int):
+        return [e for e in ControlMode][value]
+    else:
+        return value
+
+
+InputImage = Union[np.ndarray, str]
+InputImage = Union[Dict[str, InputImage], Tuple[InputImage, InputImage], InputImage]
+
+
 class ControlNetUnit:
     """
     Represents an entire ControlNet processing unit.
@@ -51,15 +73,17 @@ class ControlNetUnit:
         module: Optional[str]=None,
         model: Optional[str]=None,
         weight: float=1.0,
-        image: Optional[Union[Dict[str, Union[np.ndarray, str]], Tuple[Union[np.ndarray, str], Union[np.ndarray, str]], np.ndarray, str]]=None,
+        image: Optional[InputImage]=None,
         resize_mode: Union[ResizeMode, int, str] = ResizeMode.INNER_FIT,
         low_vram: bool=False,
-        processor_res: int=64,
+        processor_res: int=512,
         threshold_a: float=64,
         threshold_b: float=64,
         guidance_start: float=0.0,
         guidance_end: float=1.0,
-        guess_mode: bool=False,
+        pixel_perfect: bool=False,
+        control_mode: Union[ControlMode, int, str] = ControlMode.BALANCED,
+        **_kwargs,
     ):
         self.enabled = enabled
         self.module = module
@@ -73,7 +97,8 @@ class ControlNetUnit:
         self.threshold_b = threshold_b
         self.guidance_start = guidance_start
         self.guidance_end = guidance_end
-        self.guess_mode = guess_mode
+        self.pixel_perfect = pixel_perfect
+        self.control_mode = control_mode
 
     def __eq__(self, other):
         if not isinstance(other, ControlNetUnit):
@@ -120,14 +145,9 @@ def get_all_units_from(script_args: List[Any]) -> List[ControlNetUnit]:
     units = []
     i = 0
     while i < len(script_args):
-        if type(script_args[i]) is bool:
-            units.append(ControlNetUnit(*script_args[i:i + PARAM_COUNT]))
-            i += PARAM_COUNT
-
-        else:
-            if script_args[i] is not None:
-                units.append(to_processing_unit(script_args[i]))
-            i += 1
+        if script_args[i] is not None:
+            units.append(to_processing_unit(script_args[i]))
+        i += 1
 
     return units
 
@@ -140,15 +160,9 @@ def get_single_unit_from(script_args: List[Any], index: int=0) -> Optional[Contr
 
     i = 0
     while i < len(script_args) and index >= 0:
-        if type(script_args[i]) is bool:
-            if index == 0:
-                return ControlNetUnit(*script_args[i:i + PARAM_COUNT])
-            i += PARAM_COUNT
-
-        else:
-            if index == 0 and script_args[i] is not None:
-                return to_processing_unit(script_args[i])
-            i += 1
+        if index == 0 and script_args[i] is not None:
+            return to_processing_unit(script_args[i])
+        i += 1
 
         index -= 1
 
@@ -177,7 +191,10 @@ def to_processing_unit(unit: Union[Dict[str, Any], ControlNetUnit]) -> ControlNe
             del unit['mask']
 
         if 'image' in unit and not isinstance(unit['image'], dict):
-            unit['image'] = {'image': unit['image'], 'mask': mask} if mask else unit['image'] if unit['image'] else None
+            unit['image'] = {'image': unit['image'], 'mask': mask} if mask is not None else unit['image'] if unit['image'] else None
+
+        if 'guess_mode' in unit:
+            print('Guess Mode is removed since 1.1.136. Please use Control Mode instead.')
 
         unit = ControlNetUnit(**unit)
 
@@ -250,26 +267,62 @@ def get_models(update: bool=False) -> List[str]:
     """
 
     if update:
-        update_cn_models()
+        global_state.update_cn_models()
 
-    return list(cn_models_names.values())
+    return list(global_state.cn_models_names.values())
 
 
-def get_modules() -> List[str]:
+def get_modules(alias_names: bool = False) -> List[str]:
     """
     Fetch the list of available preprocessors.
     Each value is a valid candidate of `ControlNetUnit.module`.
 
     Keyword arguments:
+    alias_names -- Whether to get the ui alias names instead of internal keys
     """
 
-    return list(cn_preprocessor_modules.keys())
+    modules = list(global_state.cn_preprocessor_modules.keys())
+
+    if alias_names:
+        modules = [global_state.preprocessor_aliases.get(module, module) for module in modules]
+
+    return modules
+
+
+def get_modules_detail(alias_names: bool = False) -> Dict[str, Any]:
+    """
+    get the detail of all preprocessors including
+    sliders: the slider config in Auto1111 webUI
+
+    Keyword arguments:
+    alias_names -- Whether to get the module detail with alias names instead of internal keys
+    """
+
+    _module_detail = {}
+    _module_list = get_modules(False)
+    _module_list_alias = get_modules(True)
+    
+    _output_list = _module_list if not alias_names else _module_list_alias
+    for index, module in enumerate(_output_list):
+        if _module_list[index] in preprocessor_sliders_config:
+            _module_detail[module] = {
+                "sliders": preprocessor_sliders_config[_module_list[index]]
+            }
+        else:
+            _module_detail[module] = {
+                "sliders": []
+            }
+            
+    return _module_detail
 
 
 def find_cn_script(script_runner: scripts.ScriptRunner) -> Optional[scripts.Script]:
     """
     Find the ControlNet script in `script_runner`. Returns `None` if `script_runner` does not contain a ControlNet script.
     """
+
+    if script_runner is None:
+        return None
 
     for script in script_runner.alwayson_scripts:
         if is_cn_script(script):
