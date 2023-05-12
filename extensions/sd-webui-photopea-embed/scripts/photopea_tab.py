@@ -24,7 +24,8 @@ def on_ui_tabs():
         with gr.Row():
             # Add an iframe with Photopea directly in the tab.
             gr.HTML(
-                f"""<iframe id="{PHOTOPEA_IFRAME_ID}" 
+                f"""
+                <iframe id="{PHOTOPEA_IFRAME_ID}" 
                 src = "{PHOTOPEA_MAIN_URL}{get_photopea_url_params()}" 
                 width = "{PHOTOPEA_IFRAME_WIDTH}" 
                 height = "{PHOTOPEA_IFRAME_HEIGHT}"
@@ -67,6 +68,7 @@ def on_ui_tabs():
                     """<b>Controlnet extension not found!</b> Either <a href="https://github.com/Mikubill/sd-webui-controlnet" target="_blank">install it</a>, or activate it under Settings.""",
                     visible=not controlnet_exists,
                 )
+
                 send_t2i_cn = gr.Button(
                     value="Send to txt2img ControlNet", visible=controlnet_exists
                 )

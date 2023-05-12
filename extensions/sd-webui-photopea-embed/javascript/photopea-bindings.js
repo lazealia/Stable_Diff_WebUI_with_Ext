@@ -20,7 +20,10 @@ function onPhotopeaLoaded(iframe) {
 
         // Update the height of the iframe
         photopeaIframe.style.height = newHeight + 'px';
+        photopeaWindow.document.querySelector(".app > :last-child").remove();
+ 
     });
+
 }
 
 // Creates a button in one of the WebUI galleries that will get the currently selected image in the 
@@ -279,4 +282,3 @@ async function waitForWebUiUpdate(divToWatch) {
 
     return await promise;
 }
-
