@@ -1,13 +1,12 @@
+from __future__ import annotations
+
 import atexit
 import re
-import shlex
 import subprocess
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Union
-from gradio import strings
-import os
 
+from discord_webhook import send_to_discord
 from modules.shared import cmd_opts
 
 LOCALHOST_RUN = "localhost.run"
@@ -16,15 +15,25 @@ localhostrun_pattern = re.compile(r"(?P<url>https?://\S+\.lhr\.life)")
 remotemoe_pattern = re.compile(r"(?P<url>https?://\S+\.remote\.moe)")
 
 
-def gen_key(path: Union[str, Path]) -> None:
+def gen_key(path: str | Path) -> None:
     path = Path(path)
-    arg_string = f'ssh-keygen -t rsa -b 4096 -N "" -q -f {path.as_posix()}'
-    args = shlex.split(arg_string)
+    args = [
+        "ssh-keygen",
+        "-t",
+        "rsa",
+        "-b",
+        "4096",
+        "-q",
+        "-f",
+        path.as_posix(),
+        "-N",
+        "",
+    ]
     subprocess.run(args, check=True)
     path.chmod(0o600)
 
 
-def ssh_tunnel(host: str = LOCALHOST_RUN) -> None:
+def ssh_tunnel(host: str = LOCALHOST_RUN) -> str:
     ssh_name = "id_rsa"
     ssh_path = Path(__file__).parent.parent / ssh_name
 
@@ -40,8 +49,16 @@ def ssh_tunnel(host: str = LOCALHOST_RUN) -> None:
 
     port = cmd_opts.port if cmd_opts.port else 7860
 
-    arg_string = f"ssh -R 80:127.0.0.1:{port} -o StrictHostKeyChecking=no -i {ssh_path.as_posix()} {host}"
-    args = shlex.split(arg_string)
+    args = [
+        "ssh",
+        "-R",
+        f"80:127.0.0.1:{port}",
+        "-o",
+        "StrictHostKeyChecking=no",
+        "-i",
+        ssh_path.as_posix(),
+        host,
+    ]
 
     tunnel = subprocess.Popen(
         args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf-8"
@@ -67,15 +84,20 @@ def ssh_tunnel(host: str = LOCALHOST_RUN) -> None:
     else:
         raise RuntimeError(f"Failed to run {host}")
 
-    # print(f" * Running on {tunnel_url}")
-    os.environ['webui_url'] = tunnel_url
-    colab_url = os.getenv('colab_url')
-    strings.en["SHARE_LINK_MESSAGE"] = f"Running on public URL (recommended): {tunnel_url}"
+    print(f" * Running on {tunnel_url}")
+    return tunnel_url
+
 
 if cmd_opts.localhostrun:
     print("localhost.run detected, trying to connect...")
-    ssh_tunnel(LOCALHOST_RUN)
+    lhr_url = ssh_tunnel(LOCALHOST_RUN)
+
+    if cmd_opts.tunnel_webhook:
+        send_to_discord(lhr_url, cmd_opts.tunnel_webhook)
 
 if cmd_opts.remotemoe:
     print("remote.moe detected, trying to connect...")
-    ssh_tunnel(REMOTE_MOE)
+    moe_url = ssh_tunnel(REMOTE_MOE)
+
+    if cmd_opts.tunnel_webhook:
+        send_to_discord(moe_url, cmd_opts.tunnel_webhook)
