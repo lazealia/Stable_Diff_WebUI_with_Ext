@@ -8,6 +8,9 @@ from tempfile import TemporaryDirectory
 
 from discord_webhook import send_to_discord
 from modules.shared import cmd_opts
+from typing import Union
+from gradio import strings
+import os
 
 LOCALHOST_RUN = "localhost.run"
 REMOTE_MOE = "remote.moe"
@@ -85,7 +88,10 @@ def ssh_tunnel(host: str = LOCALHOST_RUN) -> str:
         raise RuntimeError(f"Failed to run {host}")
 
     print(f" * Running on {tunnel_url}")
-    return tunnel_url
+    os.environ['webui_url'] = tunnel_url
+    colab_url = os.getenv('colab_url')
+    strings.en["SHARE_LINK_MESSAGE"] = f"Running on public URL (recommended): {tunnel_url}"
+
 
 
 if cmd_opts.localhostrun:
