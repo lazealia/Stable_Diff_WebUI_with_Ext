@@ -243,7 +243,7 @@ def update_cn_script_in_place(
         return
 
     # fill in remaining parameters to satisfy max models, just in case script needs it.
-    max_models = shared.opts.data.get("control_net_max_models_num", 2)
+    max_models = shared.opts.data.get("control_net_max_models_num", 1)
     cn_units = cn_units + [ControlNetUnit(enabled=False)] * max(max_models - len(cn_units), 0)
 
     cn_script_args_diff = 0
