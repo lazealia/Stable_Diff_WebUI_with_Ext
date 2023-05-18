@@ -638,7 +638,7 @@ class Script(scripts.Script):
         self.infotext_fields = []
         self.paste_field_names = []
         controls = ()
-        max_models = shared.opts.data.get("control_net_max_models_num", 1)
+        max_models = shared.opts.data.get("control_net_max_models_num", 3)
         elem_id_tabname = ("img2img" if is_img2img else "txt2img") + "_controlnet"
         with gr.Group(elem_id=elem_id_tabname):
             with gr.Accordion(f"ControlNet {controlnet_version.version_flag}", open = False, elem_id="controlnet"):
@@ -1319,7 +1319,6 @@ def on_ui_settings():
         False, "Show batch images in gradio gallery output", gr.Checkbox, {"interactive": True}, section=section))
     shared.opts.add_option("controlnet_increment_seed_during_batch", shared.OptionInfo(
         False, "Increment seed after each controlnet batch iteration", gr.Checkbox, {"interactive": True}, section=section))
-    shared.opts.update()
 
 
 def on_after_component(component, **_kwargs):
