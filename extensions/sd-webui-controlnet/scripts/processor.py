@@ -80,7 +80,7 @@ def threshold(img, res=512, thr_a=127, **kwargs):
     return remove_pad(result), True
 
 
-def inpaint(img, res=512, **kwargs):
+def identity(img, **kwargs):
     return img, True
 
 
@@ -553,11 +553,16 @@ def shuffle(img, res=512, **kwargs):
     return result, True
 
 
+model_free_preprocessors = [
+    "reference_only",
+    "reference_adain",
+    "reference_adain+attn"
+]
+
 flag_preprocessor_resolution = "Preprocessor Resolution"
 preprocessor_sliders_config = {
-    "none": [
-        
-    ],
+    "none": [],
+    "inpaint": [],
     "canny": [
         {
             "name": flag_preprocessor_resolution,
@@ -751,6 +756,36 @@ preprocessor_sliders_config = {
             "value": 1.0,
             "min": 1.0,
             "max": 8.0,
+            "step": 0.01
+        }
+    ],
+    "reference_only": [
+        None,
+        {
+            "name": r'Style Fidelity (only for "Balanced" mode)',
+            "value": 0.5,
+            "min": 0.0,
+            "max": 1.0,
+            "step": 0.01
+        }
+    ],
+    "reference_adain": [
+        None,
+        {
+            "name": r'Style Fidelity (only for "Balanced" mode)',
+            "value": 0.5,
+            "min": 0.0,
+            "max": 1.0,
+            "step": 0.01
+        }
+    ],
+    "reference_adain+attn": [
+        None,
+        {
+            "name": r'Style Fidelity (only for "Balanced" mode)',
+            "value": 0.5,
+            "min": 0.0,
+            "max": 1.0,
             "step": 0.01
         }
     ],
