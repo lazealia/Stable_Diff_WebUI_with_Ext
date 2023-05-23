@@ -1,4 +1,6 @@
 # Stable Diffusion WebUI with Extensions
+Create for git clone in colab project it took longtime to add each extension. 
+- Colab_Stable_diff_Webui_with_ext https://github.com/lazealia/Colab_Stable_diff_Webui_with_ext/blob/main/Stable_diff_Webui_with_extensions.ipynb
 A browser interface based on Gradio library for Stable Diffusion
 - stable-diffusion-webui - https://github.com/AUTOMATIC1111/stable-diffusion-webui
 # Memfix
