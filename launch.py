@@ -244,10 +244,10 @@ def prepare_environment():
         check_python_version()
 
     commit = commit_hash()
-    tag = git_tag()
+    # tag = git_tag()
 
     print(f"Python {sys.version}")
-    print(f"Version: {tag}")
+    # print(f"Version: {tag}")
     print(f"Commit hash: {commit}")
 
     if args.reinstall_torch or not is_installed("torch") or not is_installed("torchvision"):
