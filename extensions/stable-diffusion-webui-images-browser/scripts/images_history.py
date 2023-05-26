@@ -183,7 +183,7 @@ def create_tab(tabname):
         dir_name = opts.outdir_save
     else:
         custom_dir = True
-        dir_name = None        
+        dir_name = "posepic"        
         if os.path.exists(path_recorder_filename):
             with open(path_recorder_filename) as f:
                 path = f.readline().rstrip("\n")
