@@ -183,7 +183,7 @@ def create_tab(tabname):
         dir_name = opts.outdir_save
     else:
         custom_dir = True
-        dir_name = "posepic"        
+        dir_name = None      
         if os.path.exists(path_recorder_filename):
             with open(path_recorder_filename) as f:
                 path = f.readline().rstrip("\n")
@@ -197,6 +197,7 @@ def create_tab(tabname):
             os.makedirs(dir_name)
 
     with gr.Row(visible= custom_dir): 
+        dir_name = "posepic"   
         img_path = gr.Textbox(dir_name, label="Images directory", placeholder="Input images directory", interactive=custom_dir)  
         img_path_history = gr.Dropdown(path_recorder)
         path_recorder = gr.State(path_recorder)
