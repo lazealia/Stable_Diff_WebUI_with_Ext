@@ -1,4 +1,11 @@
 ﻿name,prompt,negative_prompt
-badHuman,,"((((ugly)))), (((duplicate))), ((morbid)), ((mutilated)), [out of frame], extra fingers, mutated hands, ((poorly drawn hands)), ((poorly drawn face)), (((mutation))), (((deformed))), blurry, ((bad anatomy)), (((bad proportions))), ((extra limbs)), cloned face, (((disfigured))), gross proportions, (malformed limbs), ((missing arms)), ((missing legs)), (((extra arms))), (((extra legs))), (fused fingers), (too many fingers), (((long neck))) "
-Quality,"((masterpiece, best quality)), (ultra-detailed), highest quality, intricate details, 8k, extremely detailed, unreal engine","((low quality, worst quality))"
-charturner,"(((character sheet, multiple views, same equipment, same costume, same hair style, same character)))",
+BadHuman,,"((((ugly)))), (((duplicate))), ((morbid)), ((mutilated)), ((out of frame)), extra fingers, mutated hands, ((poorly drawn hands)), ((poorly drawn face)), (((mutation))), (((deformed))), blurry, ((bad anatomy)), (((bad proportions))), ((extra limbs)), cloned face, (((disfigured))), gross proportions, (malformed limbs), ((missing arms)), ((missing legs)), (((extra arms))), (((extra legs))), (fused fingers), (too many fingers), (((long neck))) "
+Quality,"((masterpiece, best quality)), (ultra-detailed), ultra high res, highest quality, intricate details, 8k, extremely detailed, unreal engine","((lowres, jpeg artifacts, low quality, worst quality, low contrast))"
+Charturner,"(((character sheet, multiple views, turnaround, sides of view, rotation, same equipment, same wear, same outfit, same costume, same bottom, same hair style, same character)))",
+Textremove,,"(((watermark, signature, text, logo, artist logo, error, extra digit)))"
+2DArt,"((digital art, digital painting, trending on artstation, golden ratio, evocative, award winning, shiny, smooth, surreal, divine, celestial, elegant, soft, fascinating, fine art, official art, keyvisual))",
+Pfuji100mf2.8m,"(Fujifilm X-T4, 100mm, f/2.8, Macro)",
+Pnikon50mf1.8,"(Nikon D850, 50mm, f/1.8)",
+Pcanon35mf2.8m,"(Canon EOS R5, 16-35mm, f/2.8, Macro)",
+Psony35mf2.8,"(Sony A7R IV, 16–35mm, f/2.8)",
+Psony90mf2.8m,"(Sony A7R IV, 90mm, f/2.8, Macro)",
